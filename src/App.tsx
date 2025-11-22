@@ -1,35 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/app/page.tsx (or src/App.tsx)
+'use client'; // Required for Next.js App Router for client components
 
-function App() {
-  const [count, setCount] = useState(0)
+import { Header } from '@/components/Header';
+import { ProductCard } from '@/components/ProductCard';
+import { useBillionaireStore } from '@/lib/zustandStore';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; // React Query Imports
+
+// ------------------------------------------
+// Placeholder for React Query Setup (Client Side)
+// Since this app doesn't fetch remote data, we'll only wrap the app.
+// If it were fetching, we'd use useQuery here.
+const queryClient = new QueryClient();
+// ------------------------------------------
+
+function HomePageContent() {
+  const products = useBillionaireStore((state) => state.products);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      
+      {/* Page Title/Branding */}
+      <div className="container mx-auto max-w-6xl p-6">
+        <div className="mb-8 text-center">
+            <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl text-gray-800">
+                SPEND ELON'S MONEY
+            </h1>
+        </div>
+
+        {/* Products Grid */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      
+      {/* Footer/Receipt would go here */}
+    </div>
+  );
 }
 
-export default App
+// Main component wrapped with React Query Provider
+export default function Home() {
+    return (
+        <QueryClientProvider client={queryClient}>
+            <HomePageContent />
+        </QueryClientProvider>
+    );
+}
