@@ -12,7 +12,7 @@ export const initialProducts: Product[] = [
     id: 1,
     name: "Rolex",
     price: 15000,
-    image: "/images/rolex.jpg",
+    image: "/images/Rolex.jpg",
   },
   {
     id: 2,

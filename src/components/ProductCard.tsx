@@ -1,4 +1,3 @@
-// src/components/ProductCard.tsx
 import { Product } from "@/data/products";
 import { useBillionaireStore } from "@/store/zustandStore";
 import { Button } from "@/components/ui/button"; // shadcn/ui button
@@ -9,10 +8,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"; // shadcn/ui card
+import { useShallow } from 'zustand/react/shallow'; // <-- IMPORTED useShallow
 
 // Utility for currency formatting (can be imported from Header)
 const formatCurrency = (amount: number) => {
-  return amount.toLocaleString("en-US", { style: "currency", currency: "USD" });
+  // Ensure no fractional digits for large currency values like Elon's
+  return amount.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 0 });
 };
 
 interface ProductCardProps {
@@ -20,14 +21,18 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  // FIX: Wrapped the selector function with useShallow to prevent infinite re-renders.
   const { currentBalance, purchases, buyProduct, sellProduct } =
-    useBillionaireStore((state) => ({
-      currentBalance: state.currentBalance,
-      purchases: state.purchases,
-      buyProduct: state.buyProduct,
-      sellProduct: state.sellProduct,
-    }));
+    useBillionaireStore(
+      useShallow((state) => ({
+        currentBalance: state.currentBalance,
+        purchases: state.purchases,
+        buyProduct: state.buyProduct,
+        sellProduct: state.sellProduct,
+      }))
+    );
 
+  // The quantity selection is now safe as 'purchases' reference is stable
   const quantity = purchases[product.id] || 0;
   const canBuy = currentBalance >= product.price;
   const canSell = quantity > 0;
@@ -38,7 +43,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="relative h-48 w-full">
           {/* Replace with actual image component/tag */}
           <div className="flex h-full w-full items-center justify-center bg-gray-100">
-            {/*  - Placeholder for Image display */}
+            {/*  - Placeholder for Image display */}
             <p className="text-sm text-gray-500">Image of {product.name}</p>
           </div>
         </div>
