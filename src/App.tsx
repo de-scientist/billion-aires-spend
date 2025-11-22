@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/Header';
 import { ProductCard } from '@/components/ProductCard';
-import { useBillionaireStore } from '@/lib/zustandStore';
+import { useBillionaireStore } from '@/store/zustandStore';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { fetchProducts } from '@/api/products'; // Import the mock API
 

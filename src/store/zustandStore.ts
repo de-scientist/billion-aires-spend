@@ -1,4 +1,3 @@
-// src/lib/zustandStore.ts
 import { create } from 'zustand';
 import type { Product } from '@/data/products';
 
