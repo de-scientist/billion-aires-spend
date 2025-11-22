@@ -8,8 +8,9 @@ import {
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { fetchProducts } from "@/api/products"; // Import the mock API
-import Product from "@/data/products";
+import {Product} from "@/data/products";
 
 // Setup the QueryClient (can be in a separate provider file for real apps)
 const queryClient = new QueryClient();
@@ -30,10 +31,13 @@ function HomePageContent() {
     // Keep the data fresh for a few minutes
     staleTime: 1000 * 60 * 5,
     // Automatically call setProducts when the data is successfully fetched
-    onSuccess: (data) => {
-      setProducts(data);
-    },
   });
+
+useEffect(() => {
+    if (data) {
+        setProducts(data);
+    }
+}, [data, setProducts]);
 
   // 2. Handle Loading State
   if (isLoading || !data) {
