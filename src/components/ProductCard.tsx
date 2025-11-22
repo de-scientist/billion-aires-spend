@@ -1,12 +1,18 @@
 // src/components/ProductCard.tsx
-import { Product } from '@/data/products';
-import { useBillionaireStore } from '@/lib/zustandStore';
-import { Button } from '@/components/ui/button'; // shadcn/ui button
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'; // shadcn/ui card
+import { Product } from "@/data/products";
+import { useBillionaireStore } from "@/lib/zustandStore";
+import { Button } from "@/components/ui/button"; // shadcn/ui button
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"; // shadcn/ui card
 
 // Utility for currency formatting (can be imported from Header)
 const formatCurrency = (amount: number) => {
-    return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  return amount.toLocaleString("en-US", { style: "currency", currency: "USD" });
 };
 
 interface ProductCardProps {
@@ -14,12 +20,13 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { currentBalance, purchases, buyProduct, sellProduct } = useBillionaireStore(state => ({
-    currentBalance: state.currentBalance,
-    purchases: state.purchases,
-    buyProduct: state.buyProduct,
-    sellProduct: state.sellProduct,
-  }));
+  const { currentBalance, purchases, buyProduct, sellProduct } =
+    useBillionaireStore((state) => ({
+      currentBalance: state.currentBalance,
+      purchases: state.purchases,
+      buyProduct: state.buyProduct,
+      sellProduct: state.sellProduct,
+    }));
 
   const quantity = purchases[product.id] || 0;
   const canBuy = currentBalance >= product.price;
@@ -31,9 +38,9 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="relative h-48 w-full">
           {/* Replace with actual image component/tag */}
           <div className="flex h-full w-full items-center justify-center bg-gray-100">
-             {/*  - Placeholder for Image display */}
-             <p className="text-sm text-gray-500">Image of {product.name}</p>
-        </div>
+            {/*  - Placeholder for Image display */}
+            <p className="text-sm text-gray-500">Image of {product.name}</p>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="p-4 text-center">
@@ -51,10 +58,10 @@ export function ProductCard({ product }: ProductCardProps) {
         >
           Sell
         </Button>
-        
+
         {/* Simple Input/Display for Quantity */}
         <div className="flex h-10 w-16 items-center justify-center rounded-md border border-input text-center text-lg font-mono">
-            {quantity}
+          {quantity}
         </div>
 
         <Button

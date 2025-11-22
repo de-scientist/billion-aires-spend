@@ -1,9 +1,9 @@
 // src/api/products.ts
-import { initialProducts } from '@/data/products';
-import type { Product } from '@/data/products';
+import { initialProducts } from "@/data/products";
+import type { Product } from "@/data/products";
 
 // Simulate network latency
-const DELAY = 500; 
+const DELAY = 500;
 
 /**
  * @description Simulates fetching the list of products from a remote API.

@@ -1,18 +1,21 @@
-import { create } from 'zustand';
-import type { Product } from '@/data/products';
+import { create } from "zustand";
+import type { Product } from "@/data/products";
 
 // Helper function to create an initial map of product IDs to quantities (all 0)
 const createInitialPurchases = (products: Product[]) => {
-    return products.reduce((acc, product) => {
-        acc[product.id] = 0;
-        return acc;
-    }, {} as Record<number, number>);
+  return products.reduce(
+    (acc, product) => {
+      acc[product.id] = 0;
+      return acc;
+    },
+    {} as Record<number, number>,
+  );
 };
 
 interface StoreState {
   initialBalance: number;
   currentBalance: number;
-  purchases: Record<number, number>; 
+  purchases: Record<number, number>;
   products: Product[]; // Now initialized as empty []
   isDataLoaded: boolean;
 
@@ -23,7 +26,7 @@ interface StoreState {
 }
 
 export const useBillionaireStore = create<StoreState>((set, get) => ({
-  initialBalance: 456000000000, 
+  initialBalance: 456000000000,
   currentBalance: 456000000000,
   purchases: {}, // Initialized as empty
   products: [], // Initialized as empty
@@ -34,18 +37,18 @@ export const useBillionaireStore = create<StoreState>((set, get) => ({
     if (get().isDataLoaded) return;
 
     set({
-        products: fetchedProducts,
-        purchases: createInitialPurchases(fetchedProducts),
-        isDataLoaded: true,
+      products: fetchedProducts,
+      purchases: createInitialPurchases(fetchedProducts),
+      isDataLoaded: true,
     });
   },
 
   buyProduct: (productId) => {
     const state = get();
-    const product = state.products.find(p => p.id === productId);
+    const product = state.products.find((p) => p.id === productId);
 
     if (product && state.currentBalance >= product.price) {
-      set(s => ({
+      set((s) => ({
         currentBalance: s.currentBalance - product.price,
         purchases: {
           ...s.purchases,
@@ -57,10 +60,10 @@ export const useBillionaireStore = create<StoreState>((set, get) => ({
 
   sellProduct: (productId) => {
     const state = get();
-    const product = state.products.find(p => p.id === productId);
+    const product = state.products.find((p) => p.id === productId);
 
     if (product && (state.purchases[productId] || 0) > 0) {
-      set(s => ({
+      set((s) => ({
         currentBalance: s.currentBalance + product.price,
         purchases: {
           ...s.purchases,

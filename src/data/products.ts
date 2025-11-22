@@ -10,21 +10,20 @@ export interface Product {
 export const initialProducts: Product[] = [
   {
     id: 1,
-    name: 'Rolex',
+    name: "Rolex",
     price: 15000,
-    image: '/images/rolex.jpg', 
+    image: "/images/rolex.jpg",
   },
   {
     id: 2,
-    name: 'Ford F 150',
+    name: "Ford F 150",
     price: 30000,
-    image: '/images/ford_f150.jpg',
+    image: "/images/ford_f150.jpg",
   },
   {
     id: 3,
-    name: 'Tesla',
+    name: "Tesla",
     price: 75000,
-    image: '/images/tesla.jpg',
+    image: "/images/tesla.jpg",
   },
-  
 ];
