@@ -3,26 +3,43 @@ import { create } from 'zustand';
 import { initialProducts, Product } from '@/data/products';
 
 // Helper function to create an initial map of product IDs to quantities (all 0)
-const initialPurchases = initialProducts.reduce((acc, product) => {
-  acc[product.id] = 0;
-  return acc;
-}, {} as Record<number, number>);
+const createInitialPurchases = (products: Product[]) => {
+    return products.reduce((acc, product) => {
+        acc[product.id] = 0;
+        return acc;
+    }, {} as Record<number, number>);
+};
 
 interface StoreState {
   initialBalance: number;
   currentBalance: number;
-  purchases: Record<number, number>; // productId -> quantity
-  products: Product[];
-  
+  purchases: Record<number, number>; 
+  products: Product[]; // Now initialized as empty []
+  isDataLoaded: boolean;
+
+  // New setter for products fetched via React Query
+  setProducts: (fetchedProducts: Product[]) => void;
   buyProduct: (productId: number) => void;
   sellProduct: (productId: number) => void;
 }
 
 export const useBillionaireStore = create<StoreState>((set, get) => ({
-  initialBalance: 456000000000, // Based on the image
+  initialBalance: 456000000000, 
   currentBalance: 456000000000,
-  purchases: initialPurchases,
-  products: initialProducts,
+  purchases: {}, // Initialized as empty
+  products: [], // Initialized as empty
+  isDataLoaded: false,
+
+  setProducts: (fetchedProducts) => {
+    // Only run initialization once
+    if (get().isDataLoaded) return;
+
+    set({
+        products: fetchedProducts,
+        purchases: createInitialPurchases(fetchedProducts),
+        isDataLoaded: true,
+    });
+  },
 
   buyProduct: (productId) => {
     const state = get();
@@ -33,7 +50,7 @@ export const useBillionaireStore = create<StoreState>((set, get) => ({
         currentBalance: s.currentBalance - product.price,
         purchases: {
           ...s.purchases,
-          [productId]: s.purchases[productId] + 1,
+          [productId]: (s.purchases[productId] || 0) + 1,
         },
       }));
     }
@@ -43,7 +60,7 @@ export const useBillionaireStore = create<StoreState>((set, get) => ({
     const state = get();
     const product = state.products.find(p => p.id === productId);
 
-    if (product && state.purchases[productId] > 0) {
+    if (product && (state.purchases[productId] || 0) > 0) {
       set(s => ({
         currentBalance: s.currentBalance + product.price,
         purchases: {
