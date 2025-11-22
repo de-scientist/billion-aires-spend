@@ -18,7 +18,7 @@ export const initialProducts: Product[] = [
     id: 2,
     name: "Ford F 150",
     price: 30000,
-    image: "/images/ford_f150.jpg",
+    image: "/images/ford f 150.jpg",
   },
   {
     id: 3,
