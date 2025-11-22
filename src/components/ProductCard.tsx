@@ -1,6 +1,6 @@
 // src/components/ProductCard.tsx
 import { Product } from "@/data/products";
-import { useBillionaireStore } from "@/lib/zustandStore";
+import { useBillionaireStore } from "@/store/zustandStore";
 import { Button } from "@/components/ui/button"; // shadcn/ui button
 import {
   Card,
