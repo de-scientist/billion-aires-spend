@@ -1,6 +1,5 @@
 // src/lib/zustandStore.ts
 import { create } from 'zustand';
-import { initialProducts } from '@/data/products';
 import type { Product } from '@/data/products';
 
 // Helper function to create an initial map of product IDs to quantities (all 0)
