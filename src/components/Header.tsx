@@ -1,5 +1,4 @@
-// src/components/Header.tsx
-import { useBillionaireStore } from "@/lib/zustandStore";
+import { useBillionaireStore } from "@/store/zustandStore";
 import { cn } from "@/lib/utils"; // utility from shadcn/ui
 
 const formatCurrency = (amount: number) => {
